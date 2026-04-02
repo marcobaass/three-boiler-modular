@@ -1,16 +1,27 @@
+import { ExperienceScene } from './ExperienceScene.js';
+import { Camera } from './Camera.js';
+
 export class World {
-    constructor() {
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.Camera();
-        this.hero = new HeroText();
-        this.particles = new ParticleSystem();
+  constructor({ eventBus, assets = null }) {
+    this.eventBus = eventBus;
+    this.assets = assets;
 
-        this.scene.add(this.hero.mesh);
-        this.scene.add(this.particles.mesh);
-    }
+    this.experienceScene = new ExperienceScene({
+      eventBus: this.eventBus,
+      assets: this.assets,
+    });
 
-    update(delta) {
-        this.hero.update(delta);
-        this.particles.update(delta);
-    }
+    this.scene = this.experienceScene.scene;
+    this.camera = new Camera();
+  }
+
+  update(delta) {
+    this.camera.update(delta);
+    this.experienceScene.update(delta);
+  }
+
+  destroy() {
+    this.camera.destroy();
+    this.experienceScene.destroy();
+  }
 }

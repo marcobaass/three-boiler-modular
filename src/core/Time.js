@@ -1,14 +1,14 @@
-import { ThreeMFLoader } from "three/examples/jsm/Addons.js";
+import * as THREE from 'three';
 
 export class Time {
-    constructor() {
-        this.clock = new THREE.Clock();
-        this.delta = 0;
-        this.elapsed = 0;
-    }
+  constructor() {
+    this.clock = new THREE.Clock();
+    this.delta = 0;
+    this.elapsed = 0;
+  }
 
-    update() {
-        this.delta = this.clock.getDelta();
-        this.elapsed = this.clock.getElapsedTime();
-    }
+  update() {
+    this.delta = this.clock.getDelta();
+    this.elapsed = this.clock.getElapsedTime();
+  }
 }

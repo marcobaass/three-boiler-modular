@@ -1,20 +1,22 @@
 export class EventBus {
-    constructor () {
-        this.events = {};
-    }
+  constructor() {
+    this.events = {};
+  }
 
-    on(event, callback) {
-        if (!this.events[event]) this.events[event] = [];
-        this.events[event].push(callback);
-    }
+  on(event, callback) {
+    if (!this.events[event]) this.events[event] = [];
+    this.events[event].push(callback);
+  }
 
-    emit(event, data) {
-        if (!this.events[event]) return;
-        this.events[event].forEach(callback => callback(data));
-    }
+  emit(event, data) {
+    if (!this.events[event]) return;
+    this.events[event].forEach((callback) => callback(data));
+  }
 
-    off(event, callback) {
-        if (!this.events[event]) return;
-        this.events[event] = this.events[event].filter(cb => cb !== callback);
-    }
+  off(event, callback) {
+    if (!this.events[event]) return;
+    this.events[event] = this.events[event].filter((cb) => cb !== callback);
+  }
 }
+
+export const eventBus = new EventBus();

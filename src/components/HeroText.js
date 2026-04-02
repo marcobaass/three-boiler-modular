@@ -1,31 +1,44 @@
-import { eventBus } from "../core/EventBus.js";
+import * as THREE from 'three';
+import vertexShader from '../shaders/heroText/vertex.glsl?raw';
+import fragmentShader from '../shaders/heroText/fragment.glsl?raw';
+import { eventBus } from '../core/EventBus.js';
 
 export class HeroText {
-    constructor() {
-        this.uniforms = {
-            uTime: { value: 0 },
-            uProgress: { value: 0 }
-        }
+  constructor({ atlas, fontData }) {
+    this.atlas = atlas ?? null;
+    this.fontData = fontData ?? null;
 
-        this.material = new THREE.ShaderMaterial({
-            uniforms: this.uniforms,
-            vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
-            transparent: true
-        })
+    this.uniforms = {
+      uTime: { value: 0 },
+      uProgress: { value: 0 },
+    };
 
-        this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.geometry = new THREE.PlaneGeometry(1, 1);
 
-        eventBus.on('scroll', (progress) => {
-            this.setProgress(progress);
-        })
-    }
+    this.material = new THREE.ShaderMaterial({
+      uniforms: this.uniforms,
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
+      transparent: true,
+    });
 
-    setProgress(value) {
-        this.uniforms.uProgress.value = value;
-    }
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
 
-    update(delta) {
-        this.uniforms.uTime.value += delta;
-    }
+    this.onScroll = (progress) => this.setProgress(progress);
+    eventBus.on('scroll:progress', this.onScroll);
+  }
+
+  setProgress(value) {
+    this.uniforms.uProgress.value = value;
+  }
+
+  update(delta) {
+    this.uniforms.uTime.value += delta;
+  }
+
+  destroy() {
+    eventBus.off('scroll:progress', this.onScroll);
+    this.geometry?.dispose();
+    this.material?.dispose();
+  }
 }
