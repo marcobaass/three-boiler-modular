@@ -5,10 +5,10 @@ import { Renderer } from './Renderer.js';
 import { InteractionManager } from '../systems/InteractionManager.js';
 
 export class App {
-  constructor({ eventBus, assets }) {
+  constructor({ eventBus, assets, sceneConfig }) {
     const canvas = document.querySelector('.webgl');
 
-    this.world = new World({ eventBus, assets });
+    this.world = new World({ eventBus, assets, canvas, sceneConfig });
     this.animationManager = new AnimationManager();
     this.interactionManager = new InteractionManager({ eventBus });
     this.time = new Time();

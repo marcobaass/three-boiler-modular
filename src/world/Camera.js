@@ -1,9 +1,11 @@
 import { sizes } from '../core/Sizes.js';
 import { eventBus } from '../core/EventBus.js';
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 export class Camera {
-  constructor() {
+  constructor(canvas, cameraConfig) {
+    this.canvas = canvas;
     this.sizes = sizes;
     this.eventBus = eventBus;
 
@@ -14,6 +16,14 @@ export class Camera {
 
     this.camera.position.set(0, 0, 6);
     this.camera.lookAt(0, 0, 0);
+
+    if (cameraConfig.orbitControls) {
+      this.controls = new OrbitControls(this.camera, this.canvas);
+      this.controls.enableDamping = true;
+      this.controls.dampingFactor = 0.05;
+    } else {
+      this.controls = null;
+    }
   }
 
   onResize({ width, height, pixelRatio }) {
@@ -22,10 +32,16 @@ export class Camera {
   }
 
   update() {
+    if (this.controls) {
+      this.controls.update();
+    }
     this.camera.updateMatrixWorld();
   }
 
   destroy() {
     this.eventBus.off('resize', this.onResize);
+    if (this.controls) {
+      this.controls.dispose();
+    }
   }
 }

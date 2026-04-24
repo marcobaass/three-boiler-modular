@@ -34,7 +34,6 @@ export class ParticleSystem {
   addListeners() {
     this.eventBus.on('scroll:progress', this.onScroll);
     this.eventBus.on('mouse:move', this.onMouseMove);
-    this.eventBus.on('section:enter', this.onSectionEnter);
     this.eventBus.on('resize', this.onResize);
   }
 
@@ -94,9 +93,6 @@ export class ParticleSystem {
   };
 
   onMouseMove = (mouse) => {
-    // Normalizing the mouse position to the range of -1 to 1
-    const x = (mouse.x / window.innerWidth) * 2 - 1;
-    const y = -(mouse.y / window.innerHeight) * 2 + 1;
     this.uniforms.uMouse.value.set(mouse.x, mouse.y);
   };
 

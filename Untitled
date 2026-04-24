@@ -1,0 +1,21 @@
+Best next enhancements (small, practical)
+
+Module toggle config
+One config object/array to enable features (cube, particles, text, controls, etc.).
+Prevents hardcoded scene assumptions.
+
+Debug mode
+Dev-only helpers (axes/grid, maybe stats/lil-gui).
+Lets you quickly verify camera, scale, and frame behavior.
+
+AssetManager real implementation
+Manifest loading + progress events + error handling.
+This is the difference between demo code and production starter.
+
+Error/fallback strategy
+If shader/assets fail, keep fallback cube visible and log clear messages.
+Avoids blank-screen mystery during project starts.
+
+Consistent dependency style
+Decide singleton imports vs constructor injection and apply uniformly.
+Makes future maintenance easier.
